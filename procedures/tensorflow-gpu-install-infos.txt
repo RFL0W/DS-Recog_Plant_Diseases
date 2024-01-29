@@ -1,0 +1,167 @@
+I. Links :
+
+cuDNN Support Matrix : https://docs.nvidia.com/deeplearning/cudnn/support-matrix/index.html
+CUDA Compatibility : https://docs.nvidia.com/deploy/cuda-compatibility/index.html
+GPU Compute Capability : https://developer.nvidia.com/cuda-gpus
+---
+Keras Process : https://www.run.ai/guides/gpu-deep-learning/keras-gpu
+https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html
+---
+https://medium.com/analytics-vidhya/tensorflow-gpu-installation-with-cuda-cudnn-40fbd4477e7
+https://schoolforengineering.com/tutorial/install-tensorflow-cuda-gpu-windows-10/
+https://machinelearningprojects.net/install-tensorflow-with-cuda-and-cudnn/
+---
+https://developer.nvidia.com/cuda-11-8-0-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local
+https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html
+---
+https://developer.nvidia.com/rdp/cudnn-download
+https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html#install-windows
+
+-----
+
+II. Compatiblity Checks :
+
+* GeForce RTX 4090 : Compute Capability = 8.9
+	-> Requires CUDA Toolkit >= 11.8. 
+	
+* Si cuDNN 8.9.2 for CUDA 11.x
+	-> CUDA Toolkit Version 11.8
+	-> NVIDIA Driver Version (Windows) >=452.39
+
+* Si cuDNN 8.9.2 for CUDA 12.x
+	-> CUDA Toolkit Version 12.1
+	-> NVIDIA Driver Version (Windows) >=527.41
+
+* Pour TensorFlow 
+
+Info : For best performance, the recommended configuration is cuDNN 8.9.2 on H100 with CUDA 12.0, and cuDNN 8.9.2 on all other GPUs with CUDA 11.8, because this is the configuration that was used for tuning heuristics.
+
+Puisque "on all other GPUs with CUDA 11.8, because this is the configuration that was used for tuning heuristics",
+nous choisirons donc :
+	* CUDA Toolkit Version 11.8
+	* cuDNN 8.9.2 for CUDA 11.x
+
+	+ Current NVIDIA Driver Version (Windows) = 536.23
+
+* Pour CUDA :
+	-> Windows Operating System Support in CUDA 11.8 :
+		- Windows 11 :
+			- Native x86_64 : YES
+			- Cross (x86_32 on x86_64) : NO		
+	-> Windows Compiler Support in CUDA 11.8 :
+		- MSVC Version : 193x
+		- IDE : Visual Studio 2022 17.0
+		- Native x86_64 : YES
+		- Cross (x86_32 on x86_64) : YES
+
+-----
+
+III. Installation process from Keras :
+
+To use Keras with GPU, follow these steps:
+	* Install TensorFlow
+		You can use the Python pip package manager to install TensorFlow.
+		TensorFlow is supported on several 64-bit systems, including Python (3.6-3.9), Ubuntu (16.04 and later), macOS (10.12.6 Sierra—later versions don’t offer GPU support) and Windows (7 and later, with C++ redistributable).
+
+	* Install the NVIDIA Drivers
+		To install the drivers, download them from the NVIDIA website and run the installation wizard.
+
+	* Install CUDA 
+		To install the CUDA Toolkit, select the version you want to download on the NVIDIA website. Make sure that it is the version currently supported by TensorFlow—you can check this on the TensorFlow website.
+
+	* Install CuDNN
+		Go back to the NVIDIA website and create a free account to access the download. Select the CuDNN version corresponding to the supported CUDA Toolkit that you have downloaded.
+
+	* Verify GPU detection
+		To check if TensorFlow can detect a GPU, open an IDE (such as a Jupyter notebook). To see if TensorFlow has detected a GPU on your machine, check the size of the array tf.config.experimental.list_physical_devices(‘GPU’)
+		If the array length is greater than 0, it means TensorFlow has detected one or more GPUs on the machine, and you can safely run GPU operations.
+
+-----
+
+IV. My Process to Install :
+
+0) Create new ENV
+	!!! Important !!! : You really should create a new fresh environment for tensorflow-gpu.
+	- You can create a new fresh ENV within Anaconda with Python 3.10.11.
+	- Then you can install the basic needed libraries directly from Anaconda Navigator :
+		* numpy
+		* pandas
+		* scikit-learn
+		* pillow
+		* django
+		* seaborn
+		* matplotlib
+		* opencv
+		* conda
+	- You can also go to the Home panel of Anaconda Navigator, choose your new ENV, then click on the "Install" button of Jupyter, to have the Jupyter required libraries.
+	- DO NOT Install CUDA, CUDNN or TensorFlow from Anaconda !!! (The integrated libs are pretty old...)
+
+1) Update Nvidia Drivers
+	Current NVIDIA Driver Version (Windows) = 536.23 OK !!!
+
+2a) Check Visual Studio (check 2b if not installed)
+	Visual Studio Community 2022 Version : 17.
+	MSVC Version = 14.36.32532 (not finding 193x something...)
+	Compilateur d'optimisation Microsoft (R) C/C++ version 19.36.32535 pour x64 (idem for x86) -> 193x could be C/C++ 19.3x... So OK !!!
+
+2b) If Visual Studio is not installed on your PC, please download & install the free version Visual Studio Community 2022 : https://visualstudio.microsoft.com/fr/
+	- When Visual Studio will have been installed you should be prompted to choose your first packages (if not, launch "Visual Studio Installer" and click on "Modify").
+	- Then I recommend you to install the following packages : "Python development" & "Desktop development with C++" ("Développement Python" & "Développement Desktop en C++" in french) : The point is that you need to have C/C++ MSVC v143 installed for CUDA to work.
+
+3) Reboot
+
+4) Install CUDA (https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html)
+	* Download CUDA version 11.8 : https://developer.nvidia.com/cuda-11-8-0-download-archive
+	* Execute "cuda_11.8.0_522.06_windows.exe"
+
+5) Install zlib (http://www.winimage.com/zLibDll/zlib123dllx64.zip)
+	* Paste the zlibwapi.dll File into the Folder:
+		C:\Windows\SysWOW64\
+
+	* Paste the zlibwapi.dll File into the Folder:
+		C:\Windows\System32\
+
+	* Add the directory path of zlibwapi.dll to the environment variable PATH (if necessary)
+		C:\Windows\System32\zlibwapi.dll (Not necessary normally as C:\Windows\System32\ is already in PATH...)
+
+5) Manage CUDnn (https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html#install-windows)
+	* Download CUDNN for CUDA 11.x : https://developer.nvidia.com/rdp/cudnn-download (Having a NVidia account is required to download...)
+	* Navigate to your <packagepath> directory containing the cuDNN package.
+	* Unzip the cuDNN package.
+		cudnn-windows-x86_64-8.9.2.26_cuda11-archive.zip
+	* Copy the following files from the unzipped package into the NVIDIA cuDNN directory.
+        	- Copy bin\cudnn*.dll to C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\bin.
+        	- Copy include\cudnn*.h to C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\include.
+        	- Copy lib\cudnn*.lib to C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\lib.
+	* Set the following environment variable to point to where cuDNN is located. To access the value of the $(PATH) environment variable, perform the following steps:
+        	- Open a command prompt from the Start menu.
+        	- Type Run and hit Enter.
+        	- Issue the control sysdm.cpl command.
+        	- Select the Advanced tab at the top of the window.
+        	- Click Environment Variables at the bottom of the window.
+        	- Add the NVIDIA cuDNN bin directory path to the PATH variable:
+			Variable Name: PATH 
+			Value to Add: C:\Program Files\NVIDIA\CUDNN\v8.x\bin
+		- Add cuDNN to your Visual Studio project.
+			¤ Open the Visual Studio project, right-click on the project name in Solution Explorer, and choose Properties.
+			¤ Click VC++ Directories and append C:\Program Files\NVIDIA\CUDNN\v8.x\include to the Include Directories field.
+			¤ Click Linker > General and append C:\Program Files\NVIDIA\CUDNN\v8.x\lib to the Additional Library Directories field.
+			¤ Click Linker > Input and append cudnn.lib to the Additional Dependencies field and click OK.
+
+6) Reboot
+
+7) Install TensorFlow (https://www.tensorflow.org/install/pip?hl=fr)
+	* In Anaconda Navogator, go to Environments, select your new ENV, click on the "Play Button", choose "Open Terminal".
+	* Then launch the below command install tensorflow (last version of tensorflow as the GPU part integrated).
+		# Anything above 2.10 is not supported on the GPU on Windows Native
+		python -m pip install "tensorflow<2.11"
+
+8) To check if install was successfull and that now GPU can be used by TensorFlow :
+	* You could directly lauch the below command in the already opened Terminal : The answer must NOT be "0".
+		# Verify install:
+		python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+
+	* Or you can do the same in your Jupyter, that you will have properly opened by clicking on the "Play Button" of your new ENV, then choosing "Open with Jupyter Notebook", then use the following command :
+		import tensorflow as tf
+		tf.config.list_physical_devices('GPU')
+		print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))

@@ -1,0 +1,15 @@
+Choix;Modele;NbClasses;Type;TransLearn;Accuracy;Path;Nom
+False;Random Forest;2 classes;Machine Learning;Non;0,92;.\\streamlit_app\\Modeles\\modelRF_2.pkl;ML RF 2 classes
+False;SVM;2 classes;Machine Learning;Non;0,91;.\\streamlit_app\\Modeles\\modelSVM_2.pkl;ML SVM 2 classes
+False;EfficientNetV2B3;2 classes;Deep Learning;Oui;0,997;.\\streamlit_app\\Modeles\\BEST-2CLASS-MODEL.h5;DL eNetV2B3 2 classes
+False;SVM;14 classes;Machine Learning;Non;0,87;.\\streamlit_app\\Modeles\\modelSVM_14.pkl;ML SVM 14 classes
+False;Random Forest;14 classes;Machine Learning;Non;0,86;.\\streamlit_app\\Modeles\\modelRF_14.pkl;ML RF 14 classes
+False;EfficientNetV2S;14 classes;Deep Learning;Oui;0,996;.\\streamlit_app\\Modeles\\BEST-14CLASS-MODEL.h5;DL eNetV2S 14 classes
+False;SVM;38 classes;Machine Learning;Non;0,9;.\\streamlit_app\\Modeles\\modelSVM_38.pkl;ML SVM 38 classes
+False;Random Forest;38 classes;Machine Learning;Non;0,86;.\\streamlit_app\\Modeles\\modelRF_38.pkl;ML RF 38 classes
+False;ViT B16;38 classes;Deep Learning;Oui;0,998;.\\streamlit_app\\Modeles\\model_ViTcomplet_unfrozen7.h5;DL VIT 38 classes
+False;LeNet;38 classes;Deep Learning;Non;0,72;.\\streamlit_app\\Modeles\\model_LeNet.h5;DL LeNet 38 classes
+False;Dropout;38 classes;Deep Learning;Non;0,93;.\\streamlit_app\\Modeles\\model_avec_dropout_V2.h5;DL DropOut 38 classes
+False;4_couches;38 classes;Deep Learning;Non;0,93;.\\streamlit_app\\Modeles\\model_4_couches_V2.h5;DL 4Couches 38 classes
+False;VGG16;38 classes;Deep Learning;Oui;0,96;.\\streamlit_app\\Modeles\\model_VGG16.h5;DL VGG16 38 classes
+False;Inception;38 classes;Deep Learning;Oui;0,97;.\\streamlit_app\\Modeles\\model_Inception.h5;DL Inception 38 classes
